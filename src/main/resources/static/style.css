@@ -1,0 +1,12 @@
+.delete-button {
+    background-color: #967dc0;
+    border-color: #967dc0;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
