@@ -6,64 +6,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>Title</title>
-    <style>
-        .delete-button {
-            background-color: #d9534f;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            margin-right: 10px;
-            float: right;
-            border: none;
-        }
-        .delete-all-button {
-            background-color: #967dc0;
-            color: white;
-            text-align: center;
-            margin: 0 auto;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            float: right;
-            border: none;
-            margin-top: 10px;
-        }
-        .delete-button::before {
-            content: "×";
-            color: white;
-            font-size: 17px;
-        }
-        li {
-            list-style-type: none;
-            border-bottom: 1px dashed #d3d3d3;
-            padding: 10px 0;
-        }
-        input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        p {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<section class="vh-100" style="background-color: #967dc0;">
+<section class="vh-100" style="background-color: #967DC0FF;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
-
                 <div class="card" style="border-radius: 15px;">
                     <div class="card-body p-5">
-
                         <h6 class="mb-3">Список покупок</h6>
-
-                        <form class="d-flex justify-content-center align-items-center mb-4">
+                        <form class="d-flex justify-content-center align-items-center mb-4" >
                             <div data-mdb-input-init class="form-outline flex-fill">
                                 <input type="text" id="new-item" class="form-control form-control-lg" />
                             </div>
@@ -77,100 +30,6 @@
         </div>
     </div>
 </section>
-
-<script >
-    const shoppingList = document.getElementById('shopping-list');
-    async function updateList() {
-        fetch('/api/items')
-            .then(response => response.json())
-            .then(data => {
-                shoppingList.innerHTML = '';
-                data.forEach((item) => {
-                    let li = document.createElement("li");
-                    li.appendChild(document.createTextNode(item.text));
-
-                    let deleteButton = document.createElement("button");
-                    deleteButton.classList.add("delete-button");
-                    deleteButton.onclick = function() {
-                        deleteItem(item.id);
-                    };
-                    li.appendChild(deleteButton);
-
-                    let checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.checked = item.isMarked;
-                    checkbox.onclick = function() {
-                        markAsPurchased(item.id);
-                    };
-                    if (checkbox.checked) {
-                        li.style.textDecoration = "line-through";
-                    }
-                    li.insertBefore(checkbox, li.firstChild);
-                    shoppingList.appendChild(li);
-                });
-                if (shoppingList.innerHTML === '') {
-                    deleteAllButton.style.display = "none";
-                    let p = document.createElement("p");
-                    p.appendChild(document.createTextNode("Список пуст"));
-                    p.style.textAlign = "center";
-                } else {
-                    deleteAllButton.style.display = "inline-block";
-                }
-            });
-
-    }
-    // Создаем кнопку "Удалить все"
-    let deleteAllButton = document.createElement("button");
-    deleteAllButton.classList.add("delete-all-button");
-    deleteAllButton.textContent = "Удалить все";
-
-
-    // Добавляем обработчик события для кнопки "Удалить все"
-    deleteAllButton.onclick = async function() {
-        fetch('/api/items')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach((item) => {
-                    deleteItem(item.id)
-                });
-            })
-    };
-
-    // Добавляем кнопку "Удалить все" после списка покупок
-    shoppingList.after(deleteAllButton);
-
-
-    async function deleteItem(id) {
-        fetch('/api/items/' + id, {
-            method: 'DELETE'
-        }).then(() => updateList());
-    }
-
-    async function addItem() {
-        const newItem = document.getElementById('new-item').value;
-        if(newItem !== ''){
-            if (shoppingList.innerHTML === '') {
-                shoppingList.innerHTML = '';
-            }
-            fetch('/api/items', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: 1,
-                    text: newItem,
-                    isMarked: false
-                })
-            }).then(() => updateList());
-        }
-    }
-    async function markAsPurchased(id) {
-        fetch('/api/items/' + id, {
-            method: 'PUT'
-        }).then(() => updateList());
-    }
-    updateList();
-</script>
+<script src="main.js"></script>
 </body>
 </html>

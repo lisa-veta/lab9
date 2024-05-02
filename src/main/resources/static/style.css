@@ -1,12 +1,43 @@
 .delete-button {
-    background-color: #967dc0;
-    border-color: #967dc0;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    background-color: #d9534f;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+    margin-right: 10px;
+    float: right;
+    border: none;
 }
-
+.delete-all-button {
+    background-color: #967dc0;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    float: right;
+    border: none;
+    margin-top: 10px;
+}
+.delete-button::before {
+    content: "×";
+    color: white;
+    font-size: 17px;
+}
 li {
     list-style-type: none;
+    border-bottom: 1px dashed #d3d3d3;
+    padding: 10px 0;
+}
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+p {
+    text-align: center;
 }

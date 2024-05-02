@@ -1,6 +1,6 @@
 const shoppingList = document.getElementById('shopping-list');
 async function updateList() {
-    fetch('/api/items')
+    fetch('/items')
         .then(response => response.json())
         .then(data => {
             shoppingList.innerHTML = '';
@@ -10,7 +10,6 @@ async function updateList() {
 
                 let deleteButton = document.createElement("button");
                 deleteButton.classList.add("delete-button");
-                deleteButton.appendChild(document.createTextNode("Удалить"));
                 deleteButton.onclick = function() {
                     deleteItem(item.id);
                 };
@@ -22,14 +21,40 @@ async function updateList() {
                 checkbox.onclick = function() {
                     markAsPurchased(item.id);
                 };
+                if (checkbox.checked) {
+                    li.style.textDecoration = "line-through";
+                }
                 li.insertBefore(checkbox, li.firstChild);
                 shoppingList.appendChild(li);
             });
+            if (shoppingList.innerHTML === '') {
+                deleteAllButton.style.display = "none";
+                let p = document.createElement("p");
+                p.appendChild(document.createTextNode("Список пуст"));
+                p.style.textAlign = "center";
+            } else {
+                deleteAllButton.style.display = "inline-block";
+            }
         });
+
 }
 
+let deleteAllButton = document.createElement("button");
+deleteAllButton.classList.add("delete-all-button");
+deleteAllButton.textContent = "Удалить все";
+deleteAllButton.onclick = async function() {
+    fetch('/items')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach((item) => {
+                deleteItem(item.id)
+            });
+        })
+};
+shoppingList.after(deleteAllButton);
+
 async function deleteItem(id) {
-    fetch('/api/items/' + id, {
+    fetch('/items/' + id, {
         method: 'DELETE'
     }).then(() => updateList());
 }
@@ -40,7 +65,7 @@ async function addItem() {
         if (shoppingList.innerHTML === '') {
             shoppingList.innerHTML = '';
         }
-        fetch('/api/items', {
+        fetch('/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,9 +78,8 @@ async function addItem() {
         }).then(() => updateList());
     }
 }
-
 async function markAsPurchased(id) {
-    fetch('/api/items/' + id, {
+    fetch('/items/' + id, {
         method: 'PUT'
     }).then(() => updateList());
 }
