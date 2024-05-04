@@ -29,10 +29,16 @@ public class ItemsService {
     }
 
     public Item getItemById(int id){
-        return items.stream()
-                .filter(product -> product.getId() == id)
-                .findFirst()
-                .get();
+        List<Item> newItems = new ArrayList<>();
+        for (Item item : items) {
+            if (item.getId() == id) {
+                newItems.add(item);
+            }
+        }
+        if (!newItems.isEmpty()) {
+            return newItems.get(0);
+        }
+        return null;
     }
 
     public void deleteItem(int id){

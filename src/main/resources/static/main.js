@@ -1,6 +1,6 @@
 const shoppingList = document.getElementById('shopping-list');
 async function updateList() {
-    fetch('/items')
+    await fetch('/items')
         .then(response => response.json())
         .then(data => {
             shoppingList.innerHTML = '';
@@ -35,6 +35,8 @@ async function updateList() {
             } else {
                 deleteAllButton.style.display = "inline-block";
             }
+        }).catch((error) => {
+            console.log(error.message);
         });
 
 }
@@ -43,20 +45,26 @@ let deleteAllButton = document.createElement("button");
 deleteAllButton.classList.add("delete-all-button");
 deleteAllButton.textContent = "Удалить все";
 deleteAllButton.onclick = async function() {
-    fetch('/items')
+    await fetch('/items')
         .then(response => response.json())
         .then(data => {
             data.forEach((item) => {
                 deleteItem(item.id)
             });
         })
+        .catch((error) => {
+            console.log(error.message);
+        });
 };
 shoppingList.after(deleteAllButton);
 
 async function deleteItem(id) {
-    fetch('/items/' + id, {
+    await fetch('/items/' + id, {
         method: 'DELETE'
-    }).then(() => updateList());
+    }).then(() => updateList())
+    .catch((error) => {
+        console.log(error.message);
+    });
 }
 
 async function addItem() {
@@ -65,7 +73,7 @@ async function addItem() {
         if (shoppingList.innerHTML === '') {
             shoppingList.innerHTML = '';
         }
-        fetch('/items', {
+        await fetch('/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -73,12 +81,19 @@ async function addItem() {
             body: JSON.stringify({
                 text: newItem
             })
-        }).then(() => updateList());
+        }).then(() => updateList())
+        .catch((error) => {
+            console.log(error.message);
+        });
     }
 }
 async function markAsPurchased(id) {
-    fetch('/items/' + id, {
+    await fetch('/items/' + id, {
         method: 'PUT'
-    }).then(() => updateList());
+    }).then(() => updateList())
+    .catch((error) => {
+        console.log(error.message);
+    });
 }
 updateList();
+
