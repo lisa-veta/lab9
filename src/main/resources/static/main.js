@@ -71,9 +71,7 @@ async function addItem() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id: 1,
-                text: newItem,
-                isMarked: false
+                text: newItem
             })
         }).then(() => updateList());
     }

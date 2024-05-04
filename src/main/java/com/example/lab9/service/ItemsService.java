@@ -9,11 +9,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class ItemsService {
-    public List<Item> items = new ArrayList<>(){
-        {
-            add(new Item(1, "помидорка"));
-        }
-    };
+    public List<Item> items = new ArrayList<>();
     int counter = 1;
 
     public Item addItem(String text){
